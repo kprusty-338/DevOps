@@ -1,41 +1,42 @@
+
 name: Build and Deploy
 
 on:
-	push:
-		branches: [ main ]
+  push:
+    branches: [ main ]
 
 jobs:
-	build:
-		runs-on: ubuntu-latest
-		outputs:
-			artifact-path: ${{ steps.upload.outputs.artifact-path }}
-		steps:
-			- name: Checkout
-				uses: actions/checkout@v4
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-path: ${{ steps.upload.outputs.artifact-path }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-			- name: Install Node (optional)
-				uses: actions/setup-node@v4
-				with:
-					node-version: '18'
+      - name: Install Node (optional)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
-			- name: Build (no-op for static files)
-				run: |
-					# If you add a build step (npm/yarn), run it here.
-					echo "No build needed for a static site"
+      - name: Build (no-op for static files)
+        run: |
+          # If you add a build step (npm/yarn), run it here.
+          echo "No build needed for a static site"
 
-			- name: Upload Pages artifact
-				id: upload
-				uses: actions/upload-pages-artifact@v1
-				with:
-					path: '.'
+      - name: Upload Pages artifact
+        id: upload
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '.'
 
-	deploy:
-		needs: build
-		runs-on: ubuntu-latest
-		permissions:
-			pages: write
-			id-token: write
-		steps:
-			- name: Deploy to GitHub Pages
-				uses: actions/deploy-pages@v1
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
 
