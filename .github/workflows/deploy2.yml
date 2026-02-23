@@ -39,7 +39,7 @@ jobs:
         run: |
           mkdir temp
           cp index.html temp/
-          cp style.css temp/
+          cp styles.css temp/
           cp app.js temp/
 
       - name: Upload Pages Artifact
