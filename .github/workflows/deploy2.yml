@@ -1,0 +1,56 @@
+name: CI-CD Pipeline v2
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read   # Only needs to read code
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Lint JavaScript
+        run: npx eslint javascript.js || true
+
+      - name: Sonar Scan
+        uses: SonarSource/sonarqube-scan-action@v2
+        with:
+          args: >
+            -Dsonar.projectKey=kprusty-338_DevOps
+            -Dsonar.organization=kprusty-338
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+
+      - name: Build
+        run: |
+          mkdir dist
+          cp index.html dist/
+          cp style.css dist/
+          cp app.js dist/
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write       # Needed to deploy
+      id-token: write    # Required for secure OIDC auth
+
+    steps:
+      - name: Deploy
+        uses: actions/deploy-pages@v4
