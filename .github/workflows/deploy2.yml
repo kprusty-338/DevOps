@@ -34,15 +34,15 @@ jobs:
 
       - name: Build
         run: |
-          mkdir dist
-          cp index.html dist/
-          cp style.css dist/
-          cp app.js dist/
+          mkdir temp
+          cp index.html temp/
+          cp style.css temp/
+          cp app.js temp/
 
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/
+          path: temp/
 
   deploy:
     needs: build
