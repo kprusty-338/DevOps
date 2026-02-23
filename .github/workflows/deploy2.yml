@@ -29,7 +29,7 @@ jobs:
             -Dsonar.projectKey=kprusty-338_DevOps
             -Dsonar.organization=kprusty-338
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.secret_token }}
           SONAR_HOST_URL: https://sonarcloud.io
 
       - name: Build
